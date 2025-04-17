@@ -1,4 +1,4 @@
-//When no id url is $"https://news.ycombinator.com/item?id={itemId}"
+using HackerNews_Assessment.Repositories;
 
 namespace HackerNews_Assessment.Services;
 
@@ -12,4 +12,12 @@ public class HackerNewsService : IHackerNewsService
         _logger = logger;
 		_repository = repository;
     }
+
+	public async Task<List<int>> GetNewStories()
+	{
+		return await _repository.ReadNewStories();
+	}
+
+	//When no id url is $"https://news.ycombinator.com/item?id={itemId}"
+
 }

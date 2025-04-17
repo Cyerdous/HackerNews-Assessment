@@ -12,7 +12,7 @@ public class HackerNewsRepository : IHackerNewsRepository
 		_logger = logger;
 	}
 
-	public async Task<List<int>> HackerNews_ReadNewStories()
+	public async Task<List<int>> ReadNewStories()
 	{
 		List<int> list = new();
 
@@ -23,7 +23,7 @@ public class HackerNewsRepository : IHackerNewsRepository
 	}
 
 //Might be able to get away with a yield return
-	public async Task HackerNews_GetStoryById()
+	public async Task GetStoryById()
 	{
 		throw new NotImplementedException();
 	}
