@@ -24,13 +24,10 @@ public class HackerNewsService : IHackerNewsService
 				Id = item.Id,
 				By = item.By,
 				Time = item.Time,
-				Url = item.Url,
+				Url = string.IsNullOrWhiteSpace(item.Url) ? $"https://news.ycombinator.com/item?id={item.Id}" : item.Url,
 				Title = item.Title
 			});
 		}
 		return stories;
 	}
-
-	//When no id url is $"https://news.ycombinator.com/item?id={itemId}"
-
 }
