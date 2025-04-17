@@ -1,7 +1,13 @@
+using HackerNews_Assessment.Repositories;
+using HackerNews_Assessment.Services;
+using Microsoft.Extensions.DependencyInjection;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
+// Add Cache singleton here
+builder.Services.AddScoped<IHackerNewsRepository,HackerNewsRepository>();
+builder.Services.AddScoped<IHackerNewsService,HackerNewsService>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
@@ -18,9 +24,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+app.MapControllers();
 
 app.MapFallbackToFile("index.html");;
 
