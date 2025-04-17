@@ -18,7 +18,7 @@ public class HackerNewsController : ControllerBase
     }
 	
 	[HttpGet]
-	public async Task<List<int>> GetNewStories()
+	public async Task<List<NewsStory>> GetNewStories()
 	{
 		return await _service.GetNewStories();
 	}

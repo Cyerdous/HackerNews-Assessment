@@ -13,9 +13,23 @@ public class HackerNewsService : IHackerNewsService
 		_repository = repository;
     }
 
-	public async Task<List<int>> GetNewStories()
+	public async Task<List<NewsStory>> GetNewStories()
 	{
-		return await _repository.ReadNewStories();
+		List<NewsStory> stories = new();
+		var storyIds = await _repository.ReadNewStories();
+		await foreach(var item in _repository.GetStoriesById(storyIds))
+		{
+			if (item.Type != "story") continue;
+			stories.Add(new NewsStory(){
+				Id = item.Id,
+				By = item.By,
+				Time = item.Time,
+				Text = item.Text,
+				Url = item.Url,
+				Title = item.Title
+			});
+		}
+		return stories;
 	}
 
 	//When no id url is $"https://news.ycombinator.com/item?id={itemId}"
