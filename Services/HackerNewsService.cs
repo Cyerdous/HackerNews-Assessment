@@ -16,7 +16,7 @@ public class HackerNewsService : IHackerNewsService
 	public async Task<List<NewsStory>> GetNewStories()
 	{
 		List<NewsStory> stories = new();
-		var storyIds = await _repository.ReadNewStories();
+		var storyIds = (await _repository.ReadNewStories()).Take(30).ToList();
 		await foreach(var item in _repository.GetStoriesById(storyIds))
 		{
 			if (item.Type != "story") continue;
@@ -24,7 +24,6 @@ public class HackerNewsService : IHackerNewsService
 				Id = item.Id,
 				By = item.By,
 				Time = item.Time,
-				Text = item.Text,
 				Url = item.Url,
 				Title = item.Title
 			});

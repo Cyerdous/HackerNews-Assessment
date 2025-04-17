@@ -1,10 +1,9 @@
 namespace HackerNews_Assessment;
 public class NewsStory
 {
-	public int Id;
-	public string By;
-	public int Time;
-	public string Text;
-	public string Url;
-	public string Title;
+	public int Id { get; set; }
+	public string By { get; set; } = "";
+	public int Time { get; set; }
+	public string Url { get; set; } = "";
+	public string Title { get; set; } = "";
 }

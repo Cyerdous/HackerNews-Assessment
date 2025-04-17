@@ -25,7 +25,9 @@ public class HackerNewsRepository : IHackerNewsRepository
 
 	public async Task<HackerNewsItem> GetStoryById(int id)
 	{
-		return await _client.GetFromJsonAsync<HackerNewsItem>(@$"https://hacker-news.firebaseio.com/v0/item/{id}.json") ?? new HackerNewsItem { Id = -1 };
+		var json = await _client.GetStringAsync(@$"https://hacker-news.firebaseio.com/v0/item/{id}.json");
+		var options = new JsonSerializerOptions() {PropertyNameCaseInsensitive = true};
+		return JsonSerializer.Deserialize<HackerNewsItem>(json,options) ?? new HackerNewsItem() {Id = -1};
 	}
 
 	public async IAsyncEnumerable<HackerNewsItem> GetStoriesById(List<int> ids)

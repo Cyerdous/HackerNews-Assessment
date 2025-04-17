@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { ApiService } from '../api/api.service';
+import { ApiService, NewsStory } from '../api/api.service';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   templateUrl: './home.component.html',
 })
 export class HomeComponent {
-	stories: Observable<number[]>;
+	stories: Observable<NewsStory[]>;
 	apiService: ApiService = inject(ApiService);
 
 	constructor(){

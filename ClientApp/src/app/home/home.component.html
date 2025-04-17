@@ -15,10 +15,18 @@
 <table>
 	<thead>
 		<th>Id</th>
+		<th>By</th>
+		<th>Time</th>
+		<th>Title</th>
+		<th>URL</th>
 	</thead>
 	<tbody>
 		<tr *ngFor="let story of stories|async">
-			<td>{{story}}</td>
+			<td>{{story.id}}</td>
+			<td>{{story.by}}</td>
+			<td>{{story.time}}</td>
+			<td>{{story.title}}</td>
+			<td>{{story.url}}</td>
 		</tr>
 	</tbody>
 </table>

@@ -15,7 +15,15 @@ export class ApiService {
 		this.http = http
 	}
 
-	public getNewStories(): Observable<number[]> {
-		return this.http.get<number[]>(this.baseUrl + 'api/HackerNews/GetNewStories')
+	public getNewStories(): Observable<NewsStory[]> {
+		return this.http.get<NewsStory[]>(this.baseUrl + 'api/HackerNews/GetNewStories')
 	}
+}
+
+export interface NewsStory {
+	id: number;
+	by: string;
+	time: number;
+	url: string;
+	title: string;
 }
