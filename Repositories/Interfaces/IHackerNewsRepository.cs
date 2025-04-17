@@ -3,5 +3,6 @@ namespace HackerNews_Assessment.Repositories;
 public interface IHackerNewsRepository
 {
 	Task<List<int>> ReadNewStories();
-	Task GetStoryById();
+	Task<HackerNewsItem> GetStoryById(int id);
+	IAsyncEnumerable<HackerNewsItem> GetStoriesById(List<int> ids);
 }
