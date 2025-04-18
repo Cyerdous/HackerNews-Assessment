@@ -11,6 +11,6 @@ export class HomeComponent {
 	apiService: ApiService = inject(ApiService);
 
 	constructor(){
-		this.stories = this.apiService.getNewStories();
+		this.stories = this.apiService.getNewStories(0);
 	}
 }

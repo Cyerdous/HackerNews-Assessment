@@ -17,9 +17,16 @@ public class HackerNewsController : ControllerBase
 		_service = service;
     }
 	
+	//This one is going to get all the stories, which we probably don't want since it'll take ages.
 	[HttpGet]
 	public async Task<List<NewsStory>> GetNewStories()
 	{
-		return await _service.GetNewStories();
+		return await _service.GetNewStories().ToListAsync();
+	}
+
+	[HttpGet("{page}")]
+	public async Task<List<NewsStory>> GetNewsByPage(int page)
+	{
+		return await _service.GetNewsStoriesByPage(page);
 	}
 }

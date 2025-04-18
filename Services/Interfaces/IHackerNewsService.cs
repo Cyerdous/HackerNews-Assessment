@@ -2,5 +2,6 @@ namespace HackerNews_Assessment.Services;
 
 public interface IHackerNewsService
 {
-	Task<List<NewsStory>> GetNewStories();
+	IAsyncEnumerable<NewsStory> GetNewStories();
+	Task<List<NewsStory>> GetNewsStoriesByPage(int page);
 }

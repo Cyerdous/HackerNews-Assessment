@@ -15,8 +15,8 @@ export class ApiService {
 		this.http = http
 	}
 
-	public getNewStories(): Observable<NewsStory[]> {
-		return this.http.get<NewsStory[]>(this.baseUrl + 'api/HackerNews/GetNewStories')
+	public getNewStories(page: number): Observable<NewsStory[]> {
+		return this.http.get<NewsStory[]>(this.baseUrl + `api/HackerNews/GetNewsByPage/${page}`);
 	}
 }
 
