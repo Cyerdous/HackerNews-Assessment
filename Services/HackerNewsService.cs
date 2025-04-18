@@ -9,7 +9,7 @@ public class HackerNewsService : IHackerNewsService
 	private readonly IHackerNewsRepository _repository;
 	private readonly IMemoryCache _cache;
 	private readonly MemoryCacheEntryOptions _cacheOptions;
-	const int itemsPerPage = 30;
+	const int itemsPerPage = 30; // Ideally this would be configurable either in the web frontend or config file, but a const will do for this implementation
 
 	public HackerNewsService(ILogger<HackerNewsService> logger, IHackerNewsRepository repository, IMemoryCache cache)
     {
@@ -21,11 +21,11 @@ public class HackerNewsService : IHackerNewsService
 
 	// Nora: I had a lot of fun learning this particular method of parallelism.
 	// However, I'm unsure how well this would scale.
-	public async IAsyncEnumerable<NewsStory> GetNewStories()
+	public async IAsyncEnumerable<NewsStory> GetNewStories(int page = 0)
 	{
 		var storyIds = (await _repository.ReadNewStories()).ToList();
 
-		foreach(var id in storyIds)
+		foreach(var id in storyIds.Skip(page*itemsPerPage).Take(itemsPerPage))
 		{
 			if (_cache.TryGetValue(id, out NewsStory story))
 			{
@@ -45,12 +45,5 @@ public class HackerNewsService : IHackerNewsService
 				}, _cacheOptions);
 			}
 		}
-	}
-
-	public async Task<List<NewsStory>> GetNewsStoriesByPage(int page)
-	{
-		return await GetNewStories().Skip(page*itemsPerPage).Take(itemsPerPage).ToListAsync();
-		
-		throw new NotImplementedException(); //TODO after cache
 	}
 }

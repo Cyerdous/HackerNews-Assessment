@@ -27,6 +27,6 @@ public class HackerNewsController : ControllerBase
 	[HttpGet("{page}")]
 	public async Task<List<NewsStory>> GetNewsByPage(int page)
 	{
-		return await _service.GetNewsStoriesByPage(page);
+		return await _service.GetNewStories(page).ToListAsync();
 	}
 }
