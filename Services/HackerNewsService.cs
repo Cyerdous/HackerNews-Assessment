@@ -9,7 +9,7 @@ public class HackerNewsService : IHackerNewsService
 	private readonly IHackerNewsRepository _repository;
 	private readonly IMemoryCache _cache;
 	private readonly MemoryCacheEntryOptions _cacheOptions;
-	const int itemsPerPage = 30; // Ideally this would be configurable either in the web frontend or config file, but a const will do for this implementation
+	const int itemsPerPage = 20; // Ideally this would be configurable either in the web frontend or config file, but a const will do for this implementation
 
 	public HackerNewsService(ILogger<HackerNewsService> logger, IHackerNewsRepository repository, IMemoryCache cache)
     {
