@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
 	}
 
 	onQueryChange(query: string): void {
+		this.page = 0
 		this.query = query
 		this.getStoryCount.next(this.query);
 	}
