@@ -7,9 +7,9 @@ public class HackerNewsRepository : IHackerNewsRepository
 {
 	private readonly HttpClient _client;
 	private readonly ILogger<HackerNewsRepository> _logger;
-	public HackerNewsRepository(ILogger<HackerNewsRepository> logger)
+	public HackerNewsRepository(ILogger<HackerNewsRepository> logger, HttpClient client)
 	{
-		_client = new HttpClient();
+		_client = client;
 		_logger = logger;
 	}
 
@@ -28,13 +28,5 @@ public class HackerNewsRepository : IHackerNewsRepository
 		var json = await _client.GetStringAsync(@$"https://hacker-news.firebaseio.com/v0/item/{id}.json");
 		var options = new JsonSerializerOptions() {PropertyNameCaseInsensitive = true};
 		return JsonSerializer.Deserialize<HackerNewsItem>(json,options) ?? new HackerNewsItem() {Id = -1};
-	}
-
-	public async IAsyncEnumerable<HackerNewsItem> GetStoriesById(List<int> ids)
-	{
-		foreach(var id in ids)
-		{
-			yield return await GetStoryById(id);
-		}
 	}
 }

@@ -27,13 +27,13 @@ public class HackerNewsController : ControllerBase
 	[HttpGet("{page}/{query?}")]
 	public async Task<List<NewsStory>> GetNewsByPage(int page, string? query = "")
 	{
-		return await _service.GetNewStories(page, query?.ToLower() ?? "");
+		return await _service.GetNewStories(page, query ?? "");
 	}
 
 	[HttpGet]
 	[Route("{query?}")]
 	public async Task<int> GetStoryCount(string? query = "")
 	{
-		return await _service.GetStoryCount(query?.ToLower() ?? "");
+		return await _service.GetStoryCount(query ?? "");
 	}
 }

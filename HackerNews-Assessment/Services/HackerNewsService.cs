@@ -29,10 +29,12 @@ public class HackerNewsService : IHackerNewsService
 	// in Blazor is any faster, but that'll have to be when I'm not busy
 	public async Task<int> GetStoryCount(string query = "")
 	{
+		query = query.ToLower();
 		return (await GetNewStories()).Where(story => story.Title.ToLower().Contains(query)).Count();
 	}
 	public async Task<List<NewsStory>> GetNewStories(int page, string query = "")
 	{
+		query = query.ToLower();
 		return (await GetNewStories()).Where(story => story.Title.ToLower().Contains(query)).Skip(page*itemsPerPage).Take(itemsPerPage).ToList();
 	}
 
@@ -42,26 +44,7 @@ public class HackerNewsService : IHackerNewsService
 	{
 		var storyIds = (await _repository.ReadNewStories()).ToList();
 		
-		return (await Task.WhenAll(storyIds.Select(id => Task.Run(async () => 
-			{
-				if (_cache.Cache.TryGetValue(id, out NewsStory story))
-				{
-					return story;
-				}
-				else
-				{
-					var item = await _repository.GetStoryById(id);
-
-					return _cache.Cache.Set(id, new NewsStory()
-					{
-						Id = item.Id,
-						By = item.By,
-						Time = item.Time,
-						Url = string.IsNullOrWhiteSpace(item.Url) ? $"https://news.ycombinator.com/item?id={item.Id}" : item.Url,
-						Title = item.Title
-					}, _cacheOptions);
-				}
-			})))).ToList();		
+		return (await Task.WhenAll(storyIds.Select(id => GetNewsStoryById(id)))).ToList();
 	}
 
 	// Cache doesn't care about the order items are added in, so I can do a parallel method to cache things ahead of time
@@ -69,20 +52,25 @@ public class HackerNewsService : IHackerNewsService
 	{
 		var storyIds = (await _repository.ReadNewStories()).ToList();
 
-		Parallel.ForEach(storyIds, async id => {
-			if (!_cache.Cache.TryGetValue(id, out NewsStory story))
-			{
-				var item = await _repository.GetStoryById(id);
+		Parallel.ForEach(storyIds, async id => await GetNewsStoryById(id));
+	}
 
-				_cache.Cache.Set(id, new NewsStory()
-				{
-					Id = item.Id,
-					By = item.By,
-					Time = item.Time,
-					Url = string.IsNullOrWhiteSpace(item.Url) ? $"https://news.ycombinator.com/item?id={item.Id}" : item.Url,
-					Title = item.Title
-				}, _cacheOptions);
-			}
-		});
+	// I broke this out mostly to boost code coverage
+	private async Task<NewsStory> GetNewsStoryById(int id)
+	{
+		if (_cache.Cache.TryGetValue(id, out NewsStory story))
+		{
+			return story;
+		}
+
+		var item = await _repository.GetStoryById(id);
+		return _cache.Cache.Set(id, new NewsStory()
+		{
+			Id = item.Id,
+			By = item.By,
+			Time = item.Time,
+			Url = string.IsNullOrWhiteSpace(item.Url) ? $"https://news.ycombinator.com/item?id={item.Id}" : item.Url,
+			Title = item.Title
+		}, _cacheOptions);
 	}
 }

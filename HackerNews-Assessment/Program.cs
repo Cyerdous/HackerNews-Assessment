@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<HNMemoryCache>();
 builder.Services.AddScoped<IHackerNewsRepository,HackerNewsRepository>();
 builder.Services.AddScoped<IHackerNewsService,HackerNewsService>();
+builder.Services.AddScoped<HttpClient>();
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();

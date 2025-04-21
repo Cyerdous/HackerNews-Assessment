@@ -4,11 +4,12 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
-    <SpaRoot>ClientApp\</SpaRoot>
+    <SpaRoot>..\ClientApp\</SpaRoot>
     <SpaProxyServerUrl>https://localhost:44435</SpaProxyServerUrl>
     <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
     <RootNamespace>HackerNews_Assessment</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
+	<IsTestProject>false</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
