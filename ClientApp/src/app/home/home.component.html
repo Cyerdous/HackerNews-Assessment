@@ -1,13 +1,18 @@
+<span style="align-items: end;">
+	<input type="text" placeholder="Search" #search>
+	<button class="primary" type="button" (click)="onQueryChange(search.value)">Search</button>
+</span>
 <div *ngFor="let story of stories|async">
 	<div><b><a href="{{story.url}}">{{story.title}}</a></b></div>
 	<div>by {{story.by}} at {{story.time*1000|date:'shortTime' }}</div>
 </div><br/>
-<mat-paginator
-	(page)="changeToPage($any($event))"
-	[length]="500"
-	[pageSize]="20"
-	[showFirstLastButtons]="true"
-	[hidePageSize]="true"
-	aria-label="Select page"
-></mat-paginator>
-
+<span>
+	<mat-paginator
+		(page)="changeToPage($any($event))"
+		[length]="storyCount|async"
+		[pageSize]="20"
+		[showFirstLastButtons]="true"
+		[hidePageSize]="true"
+		aria-label="Select page">
+	</mat-paginator>
+</span>

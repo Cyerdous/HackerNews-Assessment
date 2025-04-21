@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Inject } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, retry } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root'
@@ -15,8 +15,12 @@ export class ApiService {
 		this.http = http
 	}
 
-	public getNewStories(page: number): Observable<NewsStory[]> {
-		return this.http.get<NewsStory[]>(this.baseUrl + `api/HackerNews/GetNewsByPage/${page}`);
+	public getNewStories(page: number, query: string): Observable<NewsStory[]> {
+		return this.http.get<NewsStory[]>(this.baseUrl + `api/HackerNews/GetNewsByPage/${page}/${query}`);
+	}
+
+	public getStoryCount(query: string): Observable<number> {
+		return this.http.get<number>(this.baseUrl + `api/HackerNews/GetStoryCount/${query}`);
 	}
 }
 

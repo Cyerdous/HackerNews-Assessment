@@ -18,15 +18,22 @@ public class HackerNewsController : ControllerBase
     }
 	
 	//This one is going to get all the stories, which we probably don't want since it'll take ages.
-	[HttpGet]
-	public async Task<List<NewsStory>> GetNewStories()
+	// [HttpGet]
+	// public async Task<List<NewsStory>> GetNewStories()
+	// {
+	// 	return await _service.GetNewStories();
+	// }
+
+	[HttpGet("{page}/{query?}")]
+	public async Task<List<NewsStory>> GetNewsByPage(int page, string? query = "")
 	{
-		return await _service.GetNewStories().ToListAsync();
+		return await _service.GetNewStories(page, query?.ToLower() ?? "");
 	}
 
-	[HttpGet("{page}")]
-	public async Task<List<NewsStory>> GetNewsByPage(int page)
+	[HttpGet]
+	[Route("{query?}")]
+	public async Task<int> GetStoryCount(string? query = "")
 	{
-		return await _service.GetNewStories(page).ToListAsync();
+		return await _service.GetStoryCount(query?.ToLower() ?? "");
 	}
 }

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Add Cache singleton here
+builder.Services.AddSingleton<HNMemoryCache>();
 builder.Services.AddScoped<IHackerNewsRepository,HackerNewsRepository>();
 builder.Services.AddScoped<IHackerNewsService,HackerNewsService>();
 builder.Services.AddControllersWithViews();

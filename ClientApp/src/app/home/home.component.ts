@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ApiService, NewsStory } from '../api/api.service';
-import { BehaviorSubject, Observable, Subject, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, switchMap, merge, startWith} from 'rxjs';
 import { PageEvent } from '@angular/material/paginator';
 
 
@@ -10,21 +10,47 @@ import { PageEvent } from '@angular/material/paginator';
 })
 export class HomeComponent implements OnInit {
 	apiService: ApiService = inject(ApiService);
-	page: Subject<number>;
+	getStories: Subject<number>;
+	getStoryCount: Subject<string>;
 	stories: Observable<NewsStory[]>;
+	storyCount: Observable<number>;
+
+	page: number;
+	query: string;
 
 	constructor(){
-		this.page = new BehaviorSubject(0);
-		this.stories = this.page.pipe(
-			switchMap(page => this.apiService.getNewStories(page))
+		this.page = 0;
+		this.query = "";
+
+		this.getStoryCount = new Subject()
+		this.getStories = new BehaviorSubject(0);
+
+		this.stories = merge(
+			this.getStories.pipe(
+				switchMap(page => this.apiService.getNewStories(page, this.query))
+			),
+			this.getStoryCount.pipe(
+				switchMap(query => this.apiService.getNewStories(this.page, query))
+			)
 		);
+
+		this.storyCount = this.getStoryCount.pipe(
+			switchMap(query => this.apiService.getStoryCount(query)),
+			startWith(500)
+		);
+
 	}
 
 	ngOnInit(): void {
-		this.page.next(0);
 	}
 	
 	changeToPage(page: PageEvent): void {
-		this.page.next(page.pageIndex);
+		this.page = page.pageIndex;
+		this.getStories.next(this.page);
+	}
+
+	onQueryChange(query: string): void {
+		this.query = query
+		this.getStoryCount.next(this.query);
 	}
 }
