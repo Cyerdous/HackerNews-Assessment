@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, inject } from '@angular/core';
 import { Observable, retry } from 'rxjs';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class ApiService {
 
 	constructor(http: HttpClient, @Inject('BASE_URL') baseUrl: string) {
 		this.baseUrl = baseUrl;
-		this.http = http
+		this.http = http;
 	}
 
 	public getNewStories(page: number, query: string): Observable<NewsStory[]> {
