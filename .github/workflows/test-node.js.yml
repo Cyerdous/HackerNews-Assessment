@@ -27,6 +27,9 @@ jobs:
         cache-dependency-path: ClientApp/package-lock.json
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci --prefix /ClientApp
-    - run: npm run build --if-present --prefix /ClientApp
-    - run: npm test --prefix /ClientApp
+    - run: npm ci
+      working-directory: './ClientApp'
+    - run: npm run build --if-present
+      working-directory: './ClientApp'
+    - run: npm test
+      working-directory: './ClientApp'
